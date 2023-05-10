@@ -1,15 +1,23 @@
-import Image from 'next/image'
-import React from 'react'
-
+import Image from "next/image";
+import React, { useRef } from "react";
 
 type Props = {
-    url: string
-}
+  url: string;
+};
 
 const RandomFoxes = ({ url }: Props): JSX.Element => {
-    return (
-        <Image src={url} width={350} height={350} alt='Fox' className="rounded" />
-    )
-}
+  const node = useRef<HTMLImageElement>(null); // Con el null se evitan conflictos con TS y React
 
-export { RandomFoxes }
+  return (
+    <Image
+      ref={node}
+      src={url}
+      width={350}
+      height={350}
+      alt="Fox"
+      className="rounded"
+    />
+  );
+};
+
+export { RandomFoxes };
