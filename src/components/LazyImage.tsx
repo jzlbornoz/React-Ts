@@ -1,20 +1,29 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
-type Props = {
-  url: string;
+type PlaceholderValue = "blur" | "empty";
+
+
+type LazyProps = {
+  width: number;
+  height: number;
+  placeholder?: PlaceholderValue;
 };
 
-const RandomFoxes = ({ url }: Props): JSX.Element => {
+type NextNativeImage = React.ImgHTMLAttributes<HTMLImageElement>;
+
+type Props = NextNativeImage & LazyProps;
+
+const LazyImage = ({ src, ...imgProps }: Props): JSX.Element => {
   const node = useRef<HTMLImageElement>(null); // Con el null se evitan conflictos con TS y React
   const emptyImage = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4="
-  const [src, setSrc] = useState<string>(emptyImage);
+  const [currentSrc, setCurrentSrc] = useState<string>(emptyImage);
 
   useEffect(() => {
     //new observer
     const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
       //On intersection
-      entry.isIntersecting && setSrc(url);
+      entry.isIntersecting && setCurrentSrc(src ? src : emptyImage);
     }));
 
 
@@ -28,18 +37,16 @@ const RandomFoxes = ({ url }: Props): JSX.Element => {
     return () => {
       observer.disconnect();
     }
-  }, [url]);
+  }, [src]);
 
   return (
     <Image
       ref={node}
-      src={src}
-      width={350}
-      height={350}
+      src={currentSrc}
       alt="Fox"
-      className="rounded bg-slate-600"
+      {...imgProps}
     />
   );
 };
 
-export { RandomFoxes };
+export { LazyImage };

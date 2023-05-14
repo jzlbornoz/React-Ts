@@ -3,7 +3,7 @@ import { MouseEventHandler, useState } from "react";
 import { NextPage } from "next";
 import { Inter } from "next/font/google";
 
-import { RandomFoxes } from "@/components/RandomFox";
+import { LazyImage } from "@/components/LazyImage";
 import { ImageModel } from "@/models/Image.model";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -40,7 +40,11 @@ const Home: NextPage = () => {
       </button>
       {images.map((item, index) => (
         <div key={item.id + index} className="p-4">
-          <RandomFoxes url={item.url} />
+          <LazyImage
+            src={item.url}
+            onClick={() => console.log("holaaeee")}
+            width={300} height={300}
+            className="rounded bg-slate-600" />
         </div>
       ))}
     </main>
