@@ -44,7 +44,11 @@ const Home: NextPage = () => {
             src={item.url}
             onClick={() => console.log("holaaeee")}
             width={300} height={300}
+            onLazyLoad={(img) => {
+              console.log(`Image #${index + 1} cargada. Nodo:`, img);
+            }}
             className="rounded bg-slate-600" />
+
         </div>
       ))}
     </main>
